@@ -1,0 +1,6 @@
+*\#*
+*.bmk
+node_modules
+config.js
+java/build
+java/bin

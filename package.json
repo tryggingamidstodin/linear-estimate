@@ -1,0 +1,27 @@
+{
+  "name": "linear-estimate",
+  "version": "0.0.1",
+  "description": "linear estimate",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tryggingamidstodin/linear-estimate.git"
+  },
+  "scripts": {
+    "test": "mocha -w"
+  },
+  "keywords": [
+    "linear",
+    "estimate"
+  ],
+  "license": "mit",
+  "bugs": {
+    "url": "https://github.com/tryggingamidstodin/linear-estimate/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.1.0"
+  }
+}
