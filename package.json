@@ -1,6 +1,6 @@
 {
     "name": "linear-estimate",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "Linear Estimate module creates a function that is able to estimate a linear approximation of a function value based on an array of data points.",
     "main": "js/index.js",
     "types": "js/index.d.ts",
