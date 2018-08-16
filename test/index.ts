@@ -1,6 +1,9 @@
 import { expect } from 'chai'
 import linearEstimateFromArray from '../'
-import { linearEstimateFromArrays } from '../'
+import {
+    linearEstimateFromAverageOfArrays,
+    linearEstimateFromSumOfArrays
+} from '../'
 
 describe('linear estimate', function() {
     const points = [[50, -5], [52, 0], [108, 170], [104, 160]]
@@ -29,7 +32,7 @@ describe('linear estimate', function() {
                     )
                 }
             })
-            it('and not care if it has the same Y value', () => {
+            it('and not care if they has the same Y value', () => {
                 expect(
                     linearEstimateFromArray([[1, 1], [1, 1], [3, 3]])(2)
                 ).to.eq(2)
@@ -37,13 +40,15 @@ describe('linear estimate', function() {
         })
     })
 
-    describe('from two arrays', function() {
+    describe('average of two arrays', function() {
         const points2 = [[50, 5], [52, 4], [51, 0.5]]
         const examples = [[51, -1], [50, 0], [52, 2]]
         examples.map(function(example) {
             it('should calculate y', function() {
                 expect(
-                    linearEstimateFromArrays(points, points2)(example[0])
+                    linearEstimateFromAverageOfArrays([points, points2])(
+                        example[0]
+                    )
                 ).to.eq(example[1])
             })
         })
@@ -51,16 +56,38 @@ describe('linear estimate', function() {
         demoExamples.map(function(de) {
             it('should calculate demo example y', function() {
                 expect(
-                    linearEstimateFromArrays(
+                    linearEstimateFromAverageOfArrays([
                         [[0, 0], [1, 1], [2, 4]],
                         [[0, 0], [1, 3], [2, 8]]
-                    )(de[0])
+                    ])(de[0])
                 ).to.eq(de[1])
             })
         })
-        it('should check both arrays for duplicates', () => {
+    })
+    describe('sum of arrays', function() {
+        const points2 = [[50, 5], [52, 2], [51, 0.5]]
+        const examples = [[51, -2], [50, 0], [52, 2]]
+        examples.map(function(example) {
+            it('should calculate y', function() {
+                expect(
+                    linearEstimateFromSumOfArrays([points, points2])(example[0])
+                ).to.eq(example[1])
+            })
+        })
+        const demoExamples = [[0, 0], [0.5, 2], [1.5, 8]]
+        demoExamples.map(function(de) {
+            it('should calculate demo example y', function() {
+                expect(
+                    linearEstimateFromSumOfArrays([
+                        [[0, 0], [1, 1], [2, 4]],
+                        [[0, 0], [1, 3], [2, 8]]
+                    ])(de[0])
+                ).to.eq(de[1])
+            })
+        })
+        it('should check all arrays for duplicates', () => {
             try {
-                linearEstimateFromArrays([[1, 1]], [[1, 1], [1, 2]])
+                linearEstimateFromSumOfArrays([[[1, 1]], [[1, 1], [1, 2]]])
                 throw new Error(
                     'Should not have been able to create linear estimate function'
                 )

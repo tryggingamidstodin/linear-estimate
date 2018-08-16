@@ -3,6 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 function getX(point) {
     return point[0];
 }
+function validateArray(array) {
+    return array.map(p1 => {
+        if ((!p1[0] && p1[0] !== 0) || (!p1[1] && p1[1] !== 0)) {
+            throw new Error(`Point ${p1} is invalid`);
+        }
+        array.forEach(p2 => {
+            if (p1[0] === p2[0] && p1[1] !== p2[1]) {
+                throw new Error('Cannot create linear estimate when array has two points with same x and different y');
+            }
+        });
+        return p1;
+    });
+}
 function partition(arr, f) {
     var first = [], second = [];
     for (var i = 0; i < arr.length; i++) {
@@ -43,20 +56,6 @@ function min(arr, f) {
     }
     return arr[minIndex];
 }
-function validateArray(array) {
-    return array.map(p1 => {
-        if ((!p1[0] && p1[0] !== 0) || (!p1[1] && p1[1] !== 0)) {
-            throw new Error(`Point ${p1} is invalid`);
-        }
-        array.forEach(p2 => {
-            if (p1[0] === p2[0] && p1[1] !== p2[1]) {
-                console.log('Debug p1, p2: ', p1, p2);
-                throw new Error('Cannot create linear estimate when array has two points with same x and different y');
-            }
-        });
-        return p1;
-    });
-}
 function linearEstimateFromArray(array) {
     array = validateArray(array);
     return function (value) {
@@ -76,9 +75,11 @@ function linearEstimateFromArray(array) {
     };
 }
 exports.default = linearEstimateFromArray;
-function linearEstimateFromArrays(array1, array2) {
-    const xs = validateArray(array1)
-        .concat(validateArray(array2))
+function getXValues(arrays) {
+    return arrays
+        .reduce((prev, curr) => {
+        return prev.concat(validateArray(curr));
+    }, [])
         .reduce((prev, curr) => {
         const x = getX(curr);
         if (prev.indexOf(x) === -1) {
@@ -86,12 +87,27 @@ function linearEstimateFromArrays(array1, array2) {
         }
         return prev;
     }, []);
-    const f1 = linearEstimateFromArray(array1);
-    const f2 = linearEstimateFromArray(array2);
+}
+function linearEstimateFromAverageOfArrays(arrays) {
+    const xs = getXValues(arrays);
+    const linearEstimateFunctions = arrays.map(a => linearEstimateFromArray(a));
     const averageArray = xs.map(x => {
-        return [x, (f1(x) + f2(x)) / 2];
+        return [
+            x,
+            linearEstimateFunctions.reduce((sum, f) => f(x) + sum, 0) /
+                arrays.length
+        ];
     });
     return linearEstimateFromArray(averageArray);
 }
-exports.linearEstimateFromArrays = linearEstimateFromArrays;
+exports.linearEstimateFromAverageOfArrays = linearEstimateFromAverageOfArrays;
+function linearEstimateFromSumOfArrays(arrays) {
+    const xs = getXValues(arrays);
+    const linearEstimateFunctions = arrays.map(a => linearEstimateFromArray(a));
+    const averageArray = xs.map(x => {
+        return [x, linearEstimateFunctions.reduce((sum, f) => f(x) + sum, 0)];
+    });
+    return linearEstimateFromArray(averageArray);
+}
+exports.linearEstimateFromSumOfArrays = linearEstimateFromSumOfArrays;
 //# sourceMappingURL=index.js.map

@@ -22,28 +22,49 @@ describe('linear estimate', function () {
                     chai_1.expect(error).to.deep.eq(new Error('Cannot create linear estimate when array has two points with same x and different y'));
                 }
             });
-            it('and not care if it has the same Y value', () => {
+            it('and not care if they has the same Y value', () => {
                 chai_1.expect(__1.default([[1, 1], [1, 1], [3, 3]])(2)).to.eq(2);
             });
         });
     });
-    describe('from two arrays', function () {
+    describe('average of two arrays', function () {
         const points2 = [[50, 5], [52, 4], [51, 0.5]];
         const examples = [[51, -1], [50, 0], [52, 2]];
         examples.map(function (example) {
             it('should calculate y', function () {
-                chai_1.expect(__2.linearEstimateFromArrays(points, points2)(example[0])).to.eq(example[1]);
+                chai_1.expect(__2.linearEstimateFromAverageOfArrays([points, points2])(example[0])).to.eq(example[1]);
             });
         });
         const demoExamples = [[0, 0], [0.5, 1], [1.5, 4]];
         demoExamples.map(function (de) {
             it('should calculate demo example y', function () {
-                chai_1.expect(__2.linearEstimateFromArrays([[0, 0], [1, 1], [2, 4]], [[0, 0], [1, 3], [2, 8]])(de[0])).to.eq(de[1]);
+                chai_1.expect(__2.linearEstimateFromAverageOfArrays([
+                    [[0, 0], [1, 1], [2, 4]],
+                    [[0, 0], [1, 3], [2, 8]]
+                ])(de[0])).to.eq(de[1]);
             });
         });
-        it('should check both arrays for duplicates', () => {
+    });
+    describe('sum of arrays', function () {
+        const points2 = [[50, 5], [52, 2], [51, 0.5]];
+        const examples = [[51, -2], [50, 0], [52, 2]];
+        examples.map(function (example) {
+            it('should calculate y', function () {
+                chai_1.expect(__2.linearEstimateFromSumOfArrays([points, points2])(example[0])).to.eq(example[1]);
+            });
+        });
+        const demoExamples = [[0, 0], [0.5, 2], [1.5, 8]];
+        demoExamples.map(function (de) {
+            it('should calculate demo example y', function () {
+                chai_1.expect(__2.linearEstimateFromSumOfArrays([
+                    [[0, 0], [1, 1], [2, 4]],
+                    [[0, 0], [1, 3], [2, 8]]
+                ])(de[0])).to.eq(de[1]);
+            });
+        });
+        it('should check all arrays for duplicates', () => {
             try {
-                __2.linearEstimateFromArrays([[1, 1]], [[1, 1], [1, 2]]);
+                __2.linearEstimateFromSumOfArrays([[[1, 1]], [[1, 1], [1, 2]]]);
                 throw new Error('Should not have been able to create linear estimate function');
             }
             catch (error) {
