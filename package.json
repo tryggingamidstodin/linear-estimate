@@ -1,27 +1,38 @@
 {
-  "name": "linear-estimate",
-  "version": "0.0.1",
-  "description": "linear estimate",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/tryggingamidstodin/linear-estimate.git"
-  },
-  "scripts": {
-    "test": "mocha -w"
-  },
-  "keywords": [
-    "linear",
-    "estimate"
-  ],
-  "license": "mit",
-  "bugs": {
-    "url": "https://github.com/tryggingamidstodin/linear-estimate/issues"
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "chai": "^3.3.0",
-    "mocha": "^2.1.0"
-  }
+    "name": "linear-estimate",
+    "version": "1.0.0",
+    "description": "Linear Estimate module creates a function that is able to estimate a linear approximation of a function value based on an array of data points.",
+    "main": "js/index.js",
+    "types": "js/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/tryggingamidstodin/linear-estimate.git"
+    },
+    "scripts": {
+        "test": "mocha js/test/index.js",
+        "clean": "rm -rf js",
+        "format": "prettier --config .prettierrc --write -l '{shared,service}/**/*.ts'",
+        "build": "tsc",
+        "prepublish": "npm run clean && npm run build && npm run test"
+    },
+    "keywords": [
+        "linear",
+        "estimate"
+    ],
+    "author": "Tryggingamidstodin <bt.hugbunadargerd@tm.is> (https://github.com/tryggingamidstodin/)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/tryggingamidstodin/linear-estimate/issues"
+    },
+    "files": [
+        "js"
+    ],
+    "dependencies": {},
+    "devDependencies": {
+        "@types/mocha": "^5.2.5",
+        "typescript": "^3.0.1",
+        "chai": "^3.3.0",
+        "mocha": "^2.1.0",
+        "prettier": "^1.14.2"
+    }
 }
