@@ -57,25 +57,8 @@ function validateArray(array) {
         return p1;
     });
 }
-function linearEstimateFromArray(array1, array2) {
-    let array = validateArray(array1);
-    if (array2) {
-        const xs = array1.concat(validateArray(array2)).reduce((prev, curr) => {
-            const x = getX(curr);
-            if (prev.indexOf(x) === -1) {
-                prev.push(x);
-            }
-            return prev;
-        }, []);
-        const f1 = linearEstimateFromArray(array1);
-        const f2 = linearEstimateFromArray(array2);
-        array = xs.map(x => {
-            return [x, (f1(x) + f2(x)) / 2];
-        });
-    }
-    else {
-        array = array1;
-    }
+function linearEstimateFromArray(array) {
+    array = validateArray(array);
     return function (value) {
         var parts = partition(array, function (point) {
             return value >= point[0];
@@ -93,4 +76,22 @@ function linearEstimateFromArray(array1, array2) {
     };
 }
 exports.default = linearEstimateFromArray;
+function linearEstimateFromArrays(array1, array2) {
+    const xs = validateArray(array1)
+        .concat(validateArray(array2))
+        .reduce((prev, curr) => {
+        const x = getX(curr);
+        if (prev.indexOf(x) === -1) {
+            prev.push(x);
+        }
+        return prev;
+    }, []);
+    const f1 = linearEstimateFromArray(array1);
+    const f2 = linearEstimateFromArray(array2);
+    const averageArray = xs.map(x => {
+        return [x, (f1(x) + f2(x)) / 2];
+    });
+    return linearEstimateFromArray(averageArray);
+}
+exports.linearEstimateFromArrays = linearEstimateFromArrays;
 //# sourceMappingURL=index.js.map

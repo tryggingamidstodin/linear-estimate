@@ -73,28 +73,8 @@ function validateArray(array: Point[]) {
         return p1
     })
 }
-
-export default function linearEstimateFromArray(
-    array1: Point[],
-    array2?: Point[]
-) {
-    let array = validateArray(array1)
-    if (array2) {
-        const xs = array1.concat(validateArray(array2)).reduce((prev, curr) => {
-            const x = getX(curr)
-            if (prev.indexOf(x) === -1) {
-                prev.push(x)
-            }
-            return prev
-        }, [])
-        const f1 = linearEstimateFromArray(array1)
-        const f2 = linearEstimateFromArray(array2)
-        array = xs.map(x => {
-            return [x, (f1(x) + f2(x)) / 2]
-        })
-    } else {
-        array = array1
-    }
+export default function linearEstimateFromArray(array: Point[]) {
+    array = validateArray(array)
     return function(value: number) {
         var parts = partition(array, function(point: Point) {
             return value >= point[0]
@@ -115,4 +95,22 @@ export default function linearEstimateFromArray(
         var hallatala = (point2[1] - point1[1]) / (point2[0] - point1[0])
         return point1[1] + (value - point1[0]) * hallatala
     }
+}
+
+export function linearEstimateFromArrays(array1: Point[], array2: Point[]) {
+    const xs = validateArray(array1)
+        .concat(validateArray(array2))
+        .reduce((prev, curr) => {
+            const x = getX(curr)
+            if (prev.indexOf(x) === -1) {
+                prev.push(x)
+            }
+            return prev
+        }, [])
+    const f1 = linearEstimateFromArray(array1)
+    const f2 = linearEstimateFromArray(array2)
+    const averageArray = xs.map(x => {
+        return [x, (f1(x) + f2(x)) / 2]
+    })
+    return linearEstimateFromArray(averageArray)
 }

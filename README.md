@@ -13,7 +13,7 @@ f(0.5) //0.5
 f(1.5) //2.5
 
 or for two arrays:
-var f = require('linear-estimate')([[0, 0], [1, 1], [2, 4]],[[0, 0], [1, 3], [2, 8]])
+var f = require('linear-estimate').linearEstimateFromArrays([[0, 0], [1, 1], [2, 4]],[[0, 0], [1, 3], [2, 8]])
 f(0) //0
 f(0.5) //1
 f(1.5) //4
@@ -27,8 +27,8 @@ f(0.5) //0.5
 f(1.5) //2.5
 
 or for two arrays:
-import linearEstimateFromArray from 'linear-estimate'
-const f = linearEstimateFromArray([[0, 0], [1, 1], [2, 4]],[[0, 0], [1, 3], [2, 8]])
+import {linearEstimateFromArrays} from 'linear-estimate'
+const f = linearEstimateFromArrays([[0, 0], [1, 1], [2, 4]],[[0, 0], [1, 3], [2, 8]])
 f(0) //0
 f(0.5) //1
 f(1.5) //4

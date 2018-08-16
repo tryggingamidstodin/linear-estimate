@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import linearEstimateFromArray from '../'
+import { linearEstimateFromArrays } from '../'
 
 describe('linear estimate', function() {
     const points = [[50, -5], [52, 0], [108, 170], [104, 160]]
@@ -42,7 +43,7 @@ describe('linear estimate', function() {
         examples.map(function(example) {
             it('should calculate y', function() {
                 expect(
-                    linearEstimateFromArray(points, points2)(example[0])
+                    linearEstimateFromArrays(points, points2)(example[0])
                 ).to.eq(example[1])
             })
         })
@@ -50,7 +51,7 @@ describe('linear estimate', function() {
         demoExamples.map(function(de) {
             it('should calculate demo example y', function() {
                 expect(
-                    linearEstimateFromArray(
+                    linearEstimateFromArrays(
                         [[0, 0], [1, 1], [2, 4]],
                         [[0, 0], [1, 3], [2, 8]]
                     )(de[0])
@@ -59,7 +60,7 @@ describe('linear estimate', function() {
         })
         it('should check both arrays for duplicates', () => {
             try {
-                linearEstimateFromArray([[1, 1]], [[1, 1], [1, 2]])
+                linearEstimateFromArrays([[1, 1]], [[1, 1], [1, 2]])
                 throw new Error(
                     'Should not have been able to create linear estimate function'
                 )
