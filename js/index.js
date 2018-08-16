@@ -43,7 +43,39 @@ function min(arr, f) {
     }
     return arr[minIndex];
 }
-function linearEstimateFromArray(array) {
+function validateArray(array) {
+    return array.map(p1 => {
+        if ((!p1[0] && p1[0] !== 0) || (!p1[1] && p1[1] !== 0)) {
+            throw new Error(`Point ${p1} is invalid`);
+        }
+        array.forEach(p2 => {
+            if (p1[0] === p2[0] && p1[1] !== p2[1]) {
+                console.log('Debug p1, p2: ', p1, p2);
+                throw new Error('Cannot create linear estimate when array has two points with same x and different y');
+            }
+        });
+        return p1;
+    });
+}
+function linearEstimateFromArray(array1, array2) {
+    let array = validateArray(array1);
+    if (array2) {
+        const xs = array1.concat(validateArray(array2)).reduce((prev, curr) => {
+            const x = getX(curr);
+            if (prev.indexOf(x) === -1) {
+                prev.push(x);
+            }
+            return prev;
+        }, []);
+        const f1 = linearEstimateFromArray(array1);
+        const f2 = linearEstimateFromArray(array2);
+        array = xs.map(x => {
+            return [x, (f1(x) + f2(x)) / 2];
+        });
+    }
+    else {
+        array = array1;
+    }
     return function (value) {
         var parts = partition(array, function (point) {
             return value >= point[0];

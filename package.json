@@ -12,7 +12,7 @@
         "test": "mocha js/test/index.js",
         "clean": "rm -rf js",
         "format": "prettier --config .prettierrc --write -l '{shared,service}/**/*.ts'",
-        "build": "tsc",
+        "build": "npm run clean && tsc",
         "prepublish": "npm run clean && npm run build && npm run test"
     },
     "keywords": [
