@@ -104,10 +104,10 @@ exports.linearEstimateFromAverageOfArrays = linearEstimateFromAverageOfArrays;
 function linearEstimateFromSumOfArrays(arrays) {
     const xs = getXValues(arrays);
     const linearEstimateFunctions = arrays.map(a => linearEstimateFromArray(a));
-    const averageArray = xs.map(x => {
+    const sumArray = xs.map(x => {
         return [x, linearEstimateFunctions.reduce((sum, f) => f(x) + sum, 0)];
     });
-    return linearEstimateFromArray(averageArray);
+    return linearEstimateFromArray(sumArray);
 }
 exports.linearEstimateFromSumOfArrays = linearEstimateFromSumOfArrays;
 //# sourceMappingURL=index.js.map
